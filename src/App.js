@@ -4,11 +4,13 @@ import { DUMMY_PRODUCTS } from "./dummy-products";
 
 import "./App.css";
 import { useState } from "react";
+import CartModal from "./components/CartModal";
 
 function App() {
   const [shopCart, setShopCart] = useState({ items: [] });
 
-  function handleAddToCart(productId) {
+  function handleAddToCart(e, productId) {
+    e.preventDefault();
     setShopCart((prevShopCart) => {
       const updatedShopCart = [...prevShopCart.items];
 
@@ -39,11 +41,48 @@ function App() {
     });
   }
 
+  function handleRemoveFromCart(e, productId) {
+    e.preventDefault();
+    setShopCart((prevShopCart) => {
+      const existingShopCart = [...prevShopCart.items];
+      let newShopCartList;
+
+      const existingShopCartIndex = existingShopCart.findIndex((item) => {
+        return item.id === productId;
+      });
+
+      const existingShopCartItem = existingShopCart[existingShopCartIndex];
+
+      if (existingShopCartItem) {
+        if (existingShopCartItem.qty === 1) {
+          newShopCartList = existingShopCart.filter(
+            (item) => item.id !== productId
+          );
+          return { items: newShopCartList };
+        } else if (existingShopCartItem.qty > 1) {
+          const updatedItem = {
+            ...existingShopCartItem,
+            qty: existingShopCartItem.qty - 1,
+          };
+
+          existingShopCart[existingShopCartIndex] = updatedItem;
+          return { items: existingShopCart };
+        }
+      }
+    });
+  }
+
   return (
-    <main className="p-28">
-      <Header cart={shopCart} />
-      <Shop onAddToCart={handleAddToCart} />
-    </main>
+    <>
+      <main className="p-28">
+        <Header
+          cart={shopCart}
+          onAddItem={handleAddToCart}
+          onRemoveItem={handleRemoveFromCart}
+        />
+        <Shop onAddToCart={handleAddToCart} />
+      </main>
+    </>
   );
 }
 

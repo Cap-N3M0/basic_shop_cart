@@ -11,7 +11,7 @@ export default function Product({ item, onAddToCart }) {
         <p className="self-end m-5">
           <button
             className="bg-yellow-700 rounded-md px-3 py-1"
-            onClick={() => onAddToCart(item.id)}
+            onClick={(e) => onAddToCart(e, item.id)}
           >
             Add to Cart
           </button>
