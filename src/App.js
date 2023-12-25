@@ -4,7 +4,6 @@ import { DUMMY_PRODUCTS } from "./dummy-products";
 
 import "./App.css";
 import { useState } from "react";
-import CartModal from "./components/CartModal";
 
 function App() {
   const [shopCart, setShopCart] = useState({ items: [] });
@@ -74,7 +73,7 @@ function App() {
 
   return (
     <>
-      <main className="p-28">
+      <main className="p-28 bg-amber-900 min-w-[550px]">
         <Header
           cart={shopCart}
           onAddItem={handleAddToCart}
